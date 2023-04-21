@@ -161,12 +161,17 @@
 
 
         <script>
+            var loading = false
             function goTo(targetId) {
                 const target = document.getElementById(targetId);
                 target.scrollIntoView({ behavior: 'smooth' });
 
             }
             function contactUs() {
+                if(loading){
+                    return;
+                }
+              
                 //prevent default
                 event.preventDefault();
                 const name = document.getElementById('name');
@@ -196,7 +201,7 @@
                     return;
                 }
                 
-
+                loading = true
                 const data = {
                     name: name.value,
                     email: email.value,
@@ -216,11 +221,14 @@
                         console.log(data);
                         if (data.status === 'success') {
                             alert('Message sent successfully');
+                            loading = false
                         } else {
                             alert('Message failed to send');
+                            loading = false
                         }
                     })
                     .catch(err => {
+                        loading = false
                         alert('Message failed to send');
                     })
             }
